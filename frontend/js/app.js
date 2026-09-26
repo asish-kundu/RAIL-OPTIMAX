@@ -174,17 +174,55 @@ document.addEventListener("DOMContentLoaded", async () => {
       const plan=await window.RAIL_OPTIMAX_MAP?.runPlan();
       const s=plan?.summary||{};
       const actions=Array.isArray(plan?.actions)?plan.actions:[];
-      const routeName=(code)=>({SDAH:"Sealdah",BP:"Barrackpore"}[String(code)]||String(code||"—"));
-      const rows=actions.map(a=>{
-        const action=String(a.action||"NORMAL").replaceAll("_"," ");
-        const route=a.loop_id?`↗ ${a.loop_id}`:(a.route_status&&a.route_status!=="MAIN_LINE"?a.route_status.replaceAll("_"," "):"MAIN LINE");
-        return `<div class="ai-plan-row">
-          <div class="ai-plan-main"><b>${a.train_no} · ${a.train_name||"Train"}</b><span>${routeName(a.source)} → ${routeName(a.destination)} · ${a.direction||""}</span></div>
-          <div class="ai-plan-km">KM ${Number(a.current_km??0).toFixed(1)}</div>
-          <div class="ai-plan-action"><span class="ai-plan-action-chip ${action.includes("HOLD")?"danger":action.includes("SPEED")?"warn":"normal"}">${action}</span><small>${a.delay_minutes||0} min</small></div>
-          <div class="ai-plan-reason">${a.block_id?`Block ${a.block_id} · `:""}${a.reason||"No additional restriction"}</div>
-        </div>`;
-      }).join("");
+const liveTrains=Array.isArray(lastRailSnapshot?.trains)?lastRailSnapshot.trains:[];
+const routeName=(code)=>({SDAH:"Sealdah",BP:"Barrackpore"}[String(code)]||String(code||"—"));
+
+const actionByTrain=new Map(actions.map(a=>[String(a.train_no),a]));
+
+const scheduleTrains=[...liveTrains].sort((a,b)=>{
+  const da=String(a.direction||"");
+  const db=String(b.direction||"");
+  if(da!==db)return da==="UP"?-1:1;
+  return Number(a.current_km??0)-Number(b.current_km??0);
+});
+
+const rows=scheduleTrains.map(t=>{
+  const a=actionByTrain.get(String(t.train_no));
+  const rawAction=String(a?.action||"NORMAL");
+  const action=rawAction.replaceAll("_"," ");
+
+  const rc=t.route_control||{};
+  const route=a?.loop_id
+    ? `↗ ${a.loop_id}`
+    : rc.mode==="LOOP"
+      ? `↗ ${rc.via?.loop_id||"LOOP"}`
+      : (a?.route_status&&a.route_status!=="MAIN_LINE"
+        ? a.route_status.replaceAll("_"," ")
+        : "MAIN LINE");
+
+  const status=a ? action : (String(t.status||"").trim() || "ON TIME");
+
+  const chipClass=a
+    ? (action.includes("HOLD")?"danger":action.includes("SPEED")?"warn":"normal")
+    : "normal";
+
+  const speed=Number(t.effective_speed_kmh??t.speed_kmh??0);
+
+  return `<div class="ai-plan-row">
+    <div class="ai-plan-main">
+      <b>${t.train_no} · ${t.train_name||"Train"}</b>
+      <span>${routeName(t.origin||t.source||"SDAH")} → ${routeName(t.destination||"BP")} · ${t.direction||""}</span>
+    </div>
+    <div class="ai-plan-km">KM ${Number(t.current_km??0).toFixed(1)}</div>
+    <div class="ai-plan-action">
+      <span class="ai-plan-action-chip ${chipClass}">${status}</span>
+      <small>${a?.delay_minutes||0} min · ${speed.toFixed(0)} km/h</small>
+    </div>
+    <div class="ai-plan-reason">
+      ${a ? `${a.block_id?`Block ${a.block_id} · `:""}${a.reason||"AI-1 operational action"}` : "No additional restriction — scheduled normally"}
+    </div>
+  </div>`;
+}).join("");
       output.innerHTML=`<div class="output-result ai-plan-result">
         <div class="ai-plan-head"><div><span class="soft-badge">PLAN GENERATED</span><h4>Conflict-aware train schedule</h4><p>AI-1 considered active maintenance, headway and current live train state.</p></div><button class="outline-action" id="refresh-ai-plan">↻ Recalculate</button></div>
         <div class="output-metrics"><span><b>${s.affected_trains??0}</b> affected trains</span><span><b>${s.total_planned_delay_minutes??0}</b> min planned impact</span><span><b>${s.active_blocks_considered??0}</b> active blocks</span><span><b>${s.maintenance_tasks_considered??0}</b> maintenance tasks</span></div>
