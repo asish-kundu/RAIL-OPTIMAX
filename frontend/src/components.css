@@ -1,0 +1,95 @@
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.badge {
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  display: inline-block;
+}
+.b-green {
+  background: var(--green-bg);
+  color: var(--green);
+}
+.b-red {
+  background: var(--red-bg);
+  color: var(--red);
+}
+.b-yellow {
+  background: var(--orange-bg);
+  color: var(--orange);
+}
+.b-blue {
+  background: #eff8ff;
+  color: #175cd3;
+}
+
+.btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+.btn-green {
+  background: var(--green);
+  color: #fff;
+}
+.btn-green:hover {
+  background: #035e38;
+}
+.btn-gray {
+  background: #fff;
+  border: 1px solid var(--border);
+  color: #344054;
+}
+
+.table-sm {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin-top: 6px;
+}
+.table-sm th {
+  text-align: left;
+  padding: 6px;
+  background: #f9fafb;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+.table-sm td {
+  padding: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.form-grp {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.form-grp label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #344054;
+}
+.form-grp input,
+.form-grp select,
+.form-grp textarea {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}

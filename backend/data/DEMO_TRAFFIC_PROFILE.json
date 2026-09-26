@@ -1,0 +1,8 @@
+{
+  "profile": "OCC_DEMO_5_PLUS_5",
+  "total_trains": 10,
+  "up_trains": 5,
+  "dn_trains": 5,
+  "stations": 11,
+  "initial_loop_trains": ["12377", "12378"]
+}

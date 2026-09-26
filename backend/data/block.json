@@ -1,0 +1,94 @@
+[
+  {
+    "block_id": "B-104",
+    "section": "KM 9.5 - 10.8",
+    "location_from_km": 9.5,
+    "location_to_km": 10.8,
+    "target_track": "UP_LINE",
+    "start_time": "20:30",
+    "end_time": "21:30",
+    "duration_minutes": 60,
+    "status": "Active",
+    "approved": true,
+    "disruption_type": "Bundled Track + S&T + OHE Maintenance",
+    "emergency": false,
+    "bundled_departments": [
+      "Engineering (Track)",
+      "S&T (Signalling)",
+      "Traction (OHE)"
+    ],
+    "bundled_tasks": [
+      "ENG-1042",
+      "SIG-2018",
+      "TRD-3004"
+    ],
+    "train_impact_delay_minutes": 7,
+    "blocks_saved": 2
+  },
+  {
+    "block_id": "B-106",
+    "section": "KM 6.0 - 6.8",
+    "location_from_km": 6.0,
+    "location_to_km": 6.8,
+    "target_track": "DN_LINE",
+    "start_time": "00:00",
+    "end_time": "23:59",
+    "duration_minutes": 60,
+    "status": "Active",
+    "approved": true,
+    "disruption_type": "Track Inspection \u00b7 ACTIVE SIMULATION",
+    "emergency": false,
+    "bundled_departments": [
+      "Engineering (Track)"
+    ],
+    "bundled_tasks": [
+      "ENG-1041"
+    ],
+    "train_impact_delay_minutes": 6,
+    "blocks_saved": 0
+  },
+  {
+    "block_id": "B-108",
+    "section": "KM 16.5 - 17.2",
+    "location_from_km": 16.5,
+    "location_to_km": 17.2,
+    "target_track": "UP_LINE",
+    "start_time": "00:00",
+    "end_time": "23:59",
+    "duration_minutes": 60,
+    "status": "Active",
+    "approved": true,
+    "disruption_type": "Signal / Point Maintenance \u00b7 ACTIVE SIMULATION",
+    "emergency": false,
+    "bundled_departments": [
+      "S&T (Signalling)"
+    ],
+    "bundled_tasks": [
+      "ENG-1046"
+    ],
+    "train_impact_delay_minutes": 8,
+    "blocks_saved": 0
+  },
+  {
+    "block_id": "B-110",
+    "section": "KM 9.9 - 10.9",
+    "location_from_km": 9.9,
+    "location_to_km": 10.9,
+    "target_track": "UP_LINE",
+    "start_time": "23:00",
+    "end_time": "01:00",
+    "duration_minutes": 120,
+    "status": "Planned",
+    "approved": false,
+    "disruption_type": "Track Renewal",
+    "emergency": false,
+    "bundled_departments": [
+      "Engineering (Track)"
+    ],
+    "bundled_tasks": [
+      "ENG-1039"
+    ],
+    "train_impact_delay_minutes": 0,
+    "blocks_saved": 0
+  }
+]

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RAIL-OPTIMAX | My Queries</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="../src/components.css" />
+  </head>
+  <body style="padding: 20px; overflow-y: auto">
+    <div class="card">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 12px;
+        "
+      >
+        <h2>All Department Maintenance Requests</h2>
+        <a href="../index.html" class="btn btn-gray">← Back to Dashboard</a>
+      </div>
+      <table class="table-sm">
+        <thead>
+          <tr>
+            <th>Query ID</th>
+            <th>Location</th>
+            <th>Type</th>
+            <th>Duration</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Submitted On</th>
+          </tr>
+        </thead>
+        <tbody id="all-queries-mount"></tbody>
+      </table>
+    </div>
+    <script type="module">
+      import { renderSubmittedQueriesTable } from "../js/maintenance.js";
+      const data = await fetch("../maintenance/").then((r) => r.json());
+      renderSubmittedQueriesTable("all-queries-mount", data);
+    </script>
+  </body>
+</html>

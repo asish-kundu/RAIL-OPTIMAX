@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: rail-optimax-occ
+    runtime: docker
+    plan: free
+    healthCheckPath: /health

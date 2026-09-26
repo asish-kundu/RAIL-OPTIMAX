@@ -1,0 +1,148 @@
+{
+  "corridor_id": "CORR_SDAH_BP",
+  "name": "Sealdah - Barrackpore Custom OCC Corridor",
+  "length_km": 25.0,
+  "tracks": [
+    "UP_LINE",
+    "DN_LINE"
+  ],
+  "stations": [
+    {
+      "id": "S-1",
+      "code": "S1",
+      "name": "S-1",
+      "km": 0,
+      "map": {
+        "up_x": 30,
+        "dn_x": 30
+      }
+    },
+    {
+      "id": "S-2",
+      "code": "S2",
+      "name": "S-2",
+      "km": 2.5,
+      "map": {
+        "up_x": 180,
+        "dn_x": 180
+      }
+    },
+    {
+      "id": "S-3",
+      "code": "S3",
+      "name": "S-3",
+      "km": 5,
+      "map": {
+        "up_x": 360,
+        "dn_x": 360
+      }
+    },
+    {
+      "id": "S-4",
+      "code": "S4",
+      "name": "S-4",
+      "km": 7.5,
+      "map": {
+        "up_x": 520,
+        "dn_x": 520
+      }
+    },
+    {
+      "id": "S-5",
+      "code": "S5",
+      "name": "S-5",
+      "km": 10,
+      "map": {
+        "up_x": 650,
+        "dn_x": 650
+      }
+    },
+    {
+      "id": "S-6",
+      "code": "S6",
+      "name": "S-6",
+      "km": 12.5,
+      "map": {
+        "up_x": 820,
+        "dn_x": 820
+      }
+    },
+    {
+      "id": "S-7",
+      "code": "S7",
+      "name": "S-7",
+      "km": 15,
+      "map": {
+        "up_x": 1000,
+        "dn_x": 1000
+      }
+    },
+    {
+      "id": "S-8",
+      "code": "S8",
+      "name": "S-8",
+      "km": 17.5,
+      "map": {
+        "up_x": 1120,
+        "dn_x": 1120
+      }
+    },
+    {
+      "id": "S-9",
+      "code": "S9",
+      "name": "S-9",
+      "km": 20,
+      "map": {
+        "up_x": 1240,
+        "dn_x": 1240
+      }
+    },
+    {
+      "id": "S-10",
+      "code": "S10",
+      "name": "S-10",
+      "km": 22.5,
+      "map": {
+        "up_x": 1320,
+        "dn_x": 1320
+      }
+    },
+    {
+      "id": "S-11",
+      "code": "S11",
+      "name": "S-11",
+      "km": 25,
+      "map": {
+        "up_x": 1405,
+        "dn_x": 1405
+      }
+    }
+  ],
+  "speed_limits": {
+    "default_kmh": 90,
+    "caution_kmh": 30,
+    "block_approach_kmh": 45
+  },
+  "safety": {
+    "min_headway_km": 1.0,
+    "block_buffer_km": 1.5
+  },
+  "loop_sections": [
+    {
+      "id": "LOOP-1",
+      "station": "S-4",
+      "capacity": 1,
+      "exit_km": 5.2,
+      "map_y_up": 156,
+      "map_y_dn": 156
+    },
+    {
+      "id": "LOOP-2",
+      "station": "S-7",
+      "capacity": 1,
+      "exit_km": 18.0,
+      "map_y_up": 245,
+      "map_y_dn": 245
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+[
+  {
+    "corridor_id": "CORR_SDAH_BP",
+    "name": "Sealdah - Barrackpore Custom OCC Corridor",
+    "total_length_km": 25.0,
+    "stations": [
+      {
+        "name": "S-1",
+        "code": "S1",
+        "id": "S-1",
+        "km": 0
+      },
+      {
+        "name": "S-2",
+        "code": "S2",
+        "id": "S-2",
+        "km": 2.5
+      },
+      {
+        "name": "S-3",
+        "code": "S3",
+        "id": "S-3",
+        "km": 5
+      },
+      {
+        "name": "S-4",
+        "code": "S4",
+        "id": "S-4",
+        "km": 7.5
+      },
+      {
+        "name": "S-5",
+        "code": "S5",
+        "id": "S-5",
+        "km": 10
+      },
+      {
+        "name": "S-6",
+        "code": "S6",
+        "id": "S-6",
+        "km": 12.5
+      },
+      {
+        "name": "S-7",
+        "code": "S7",
+        "id": "S-7",
+        "km": 15
+      },
+      {
+        "name": "S-8",
+        "code": "S8",
+        "id": "S-8",
+        "km": 17.5
+      },
+      {
+        "name": "S-9",
+        "code": "S9",
+        "id": "S-9",
+        "km": 20
+      },
+      {
+        "name": "S-10",
+        "code": "S10",
+        "id": "S-10",
+        "km": 22.5
+      },
+      {
+        "name": "S-11",
+        "code": "S11",
+        "id": "S-11",
+        "km": 25
+      }
+    ]
+  }
+]

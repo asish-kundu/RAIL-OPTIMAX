@@ -1,0 +1,17 @@
+{
+  "model": "LightGBM regression",
+  "version": "synthetic-v1",
+  "training_samples": 1600,
+  "feature_names": [
+    "priority_level",
+    "emergency",
+    "duration_minutes",
+    "requires_power_block",
+    "requires_traffic_block",
+    "overdue_days",
+    "location_km",
+    "resource_pressure"
+  ],
+  "label": "prototype_priority_score_0_100",
+  "note": "Synthetic prototype model. Not trained on real railway operational data and not safety-certified."
+}

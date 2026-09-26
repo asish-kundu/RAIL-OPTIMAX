@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RAIL-OPTIMAX | AI Coordination</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="../src/components.css" />
+    <link rel="stylesheet" href="../src/dashboard.css" />
+  </head>
+  <body style="padding: 20px; overflow-y: auto">
+    <div class="card">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 16px;
+        "
+      >
+        <h2>Multi-Department AI Coordination Engine</h2>
+        <a href="../index.html" class="btn btn-gray">← Back to Dashboard</a>
+      </div>
+      <button class="btn btn-green" id="runOptimizerBtn">
+        ⚡ Run Global Optimization (OR-Tools CP-SAT)
+      </button>
+      <div id="optimizerResult" style="margin-top: 16px"></div>
+    </div>
+    <script type="module">
+      import { triggerOptimizer } from "../js/ai-recommendation.js";
+      document
+        .getElementById("runOptimizerBtn")
+        .addEventListener("click", async () => {
+          const res = await triggerOptimizer();
+          document.getElementById("optimizerResult").innerHTML = `
+        <div class="card opp-highlight">
+          <strong>Optimization Complete:</strong> ${res.optimized_bundles.length} Multi-Department Bundles Found.<br>
+          Reduced Conflicts by <strong>${res.impact_summary.conflicts_reduced_percent}%</strong> and saved <strong>${res.impact_summary.blocks_saved}</strong> individual line possessions.
+        </div>
+      `;
+        });
+    </script>
+  </body>
+</html>

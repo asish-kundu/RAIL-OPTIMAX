@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAIL-OPTIMAX | AI Automatic Block Planning</title>
+    <link rel="stylesheet" href="./src/style.css" />
+    <link rel="stylesheet" href="./src/components.css" />
+    <link rel="stylesheet" href="./src/dashboard.css" />
+    <link rel="stylesheet" href="./src/map.css?v=27" />
+  </head>
+  <body>
+    <div class="app-wrapper">
+<div class="app-body">
+
+
+        <main class="main-content">
+          <!-- Control Office View: OCC-style operational layout -->
+          <div id="controlView" class="occ-dashboard">
+            <section class="occ-top-grid">
+              <article class="occ-panel schedule-panel">
+                <div class="occ-tabs" role="tablist" aria-label="Schedule type">
+                  <button class="occ-tab active" data-schedule="train" role="tab">Train Schedule</button>
+                  <button class="occ-tab" data-schedule="maintenance" role="tab">Maintenance Schedule</button>
+                </div>
+                <div class="schedule-content" id="schedule-content">
+                  <div class="panel-eyebrow" id="schedule-panel-eyebrow">LIVE TRAIN STATE</div>
+                  <div id="live-schedule-list" class="live-schedule-list"></div>
+                  <div id="maintenance-schedule-list" class="maintenance-schedule-list" hidden></div>
+                  <div class="schedule-foot"><span class="live-indicator"></span><span id="schedule-sync-status">Waiting for telemetry…</span></div>
+                </div>
+                <button class="occ-upload" title="Import schedule" aria-label="Import schedule">⇧</button>
+              </article>
+
+              <article class="occ-panel track-panel">
+                <div class="track-heading"><div><span class="panel-eyebrow">LIVE CORRIDOR SCHEMATIC</span><h2>Sealdah <span>—</span> Barrackpore</h2></div><div class="track-legend"><span><i class="legend-line active"></i>Active</span><span><i class="legend-line planned"></i>Planned</span><span><i class="legend-line available"></i>Available</span></div></div>
+                <div class="track-wrapper" id="railway-map" aria-label="Live railway corridor schematic"></div>
+                <div class="track-foot"><span><span class="live-indicator"></span> LIVE TRAIN MOVEMENT</span><span id="track-runtime-count">Waiting for telemetry…</span></div>
+              </article>
+
+              <article class="occ-panel management-panel">
+                <div class="occ-tabs management-tabs" role="tablist" aria-label="Management tools">
+                  <button class="occ-tab active" data-management="first" role="tab">1<sup>st</sup> Management</button>
+                  <button class="occ-tab" data-management="second" role="tab">2<sup>nd</sup> Management</button>
+                </div>
+                <div class="management-content" id="management-content">
+                  <section class="management-view" id="management-first-view">
+                    <div class="control-module-tag">OCC CONTROL DESK · 1ST MANAGEMENT</div>
+                    <h2>Possession & Maintenance</h2>
+                    <p>Monitor active work, blocked sections and maintenance review status.</p>
+                    <div class="management-stats"><span><b id="active-block-count">0</b> Active blocks</span><span><b id="pending-review-count">0</b> Pending reviews</span></div>
+                    <div class="active-work-panel" id="active-work-panel" aria-live="polite">
+                      <div class="active-work-head"><span>ACTIVE WORK</span><span id="active-work-summary">No active possession</span></div>
+                      <div id="active-work-list" class="active-work-list"><div class="active-work-empty">Waiting for maintenance telemetry…</div></div>
+                    </div>
+                    <div class="control-state"><span class="live-indicator"></span> Maintenance desk ready</div>
+                  </section>
+                  <section class="management-view" id="management-second-view" hidden>
+                    <div class="control-module-tag">OCC CONTROL DESK · 2ND MANAGEMENT</div>
+                    <h2>Traffic & AI-3 Control</h2>
+                    <p>Review live train-control actions separately from maintenance management.</p>
+                    <div class="management-stats"><span><b id="ai3-active-control-count">0</b> AI-3 controls</span><span><b id="ai3-reroute-count">0</b> Reroutes</span></div>
+                    <div class="traffic-control-panel">
+                      <div class="traffic-control-head"><span>LIVE TRAFFIC CONTROL</span><span id="ai3-control-summary">Waiting for telemetry</span></div>
+                      <div class="traffic-control-grid">
+                        <div><b id="ai3-hold-count">0</b><small>HOLD</small></div>
+                        <div><b id="ai3-speed-count">0</b><small>SPEED REG.</small></div>
+                        <div><b id="ai3-loop-count">0</b><small>ON LOOP</small></div>
+                        <div><b id="ai3-normal-count">0</b><small>NORMAL</small></div>
+                      </div>
+                      <div id="ai3-control-list" class="ai3-control-list"><div class="active-work-empty">Waiting for AI-3 telemetry…</div></div>
+                    </div>
+                    <div class="control-state"><span class="live-indicator"></span> Traffic control desk ready</div>
+                  </section>
+                </div>
+                <div class="bot-grid" id="bot-grid"></div>
+                <button class="end-management" id="end-management">End Management <span>↗</span></button>
+              </article>
+            </section>
+
+            <section class="occ-bottom-grid">
+              <article class="occ-panel output-panel">
+                <div class="bottom-panel-head"><div><span class="panel-eyebrow">AI PLANNING</span><h3>New Train Schedule — AI Output</h3></div><span class="soft-badge">DRAFT</span></div>
+                <div id="ai-output-content" class="output-content"><div class="output-empty-icon">✦</div><b>AI-optimized schedule will appear here</b><p>Run coordination to generate a conflict-aware train plan.</p><button class="outline-action" id="run-ai-plan">Generate AI Plan</button></div>
+                <button class="mini-download" title="Export AI output" aria-label="Export AI output">⇩</button>
+              </article>
+              <article class="occ-panel ai3-panel">
+                <div id="ai3-suggestions-mount"></div>
+              </article>
+              <article class="occ-panel emergency-panel">
+                <div class="bottom-panel-head"><div><span class="panel-eyebrow">MAINTENANCE CONTROL</span><h3>Quick Maintenance Input</h3></div><span class="emergency-badge">PRIORITY</span></div>
+                <p class="emergency-copy">Submit an urgent maintenance requirement for immediate AI coordination.</p>
+                <div class="emergency-fields emergency-fields-v27">
+                  <label>Department<select id="quick-emergency-dept"><option value="Engineering (Track)">Engineering (Track)</option><option value="S&T (Signalling)">S&T (Signalling)</option><option value="Traction (OHE)">Traction (OHE)</option></select></label>
+                  <label>Asset<select id="quick-emergency-asset"><option value="Track Section">Track</option><option value="Signal / Point">Signal / Point</option><option value="Catenary Wire">OHE / Wire</option></select></label>
+                  <label>Route<select id="quick-emergency-track"><option value="UP_LINE">UP Line</option><option value="DN_LINE">DN Line</option></select></label>
+                  <label>From KM<input id="quick-emergency-km" type="number" step="0.1" min="0" max="25" placeholder="12.0"></label>
+                  <label>To KM<input id="quick-emergency-to-km" type="number" step="0.1" min="0" max="25" placeholder="13.0"></label>
+                  <label>Duration<input id="quick-emergency-duration" type="number" value="60" min="5" max="360"></label>
+                </div>
+                <label class="emergency-description-label">Emergency details<textarea id="quick-emergency-description" rows="2" placeholder="Describe track failure, signal failure, OHE/wire issue…"></textarea></label>
+                <label id="ohe-isolation-wrap" class="ohe-isolation-wrap"><input id="quick-emergency-ohe-isolated" type="checkbox"> OHE power isolated / earthing confirmed</label>
+                <button class="emergency-submit" id="emergency-submit">＋ Submit Emergency Input</button>
+                <div id="emergency-result" class="emergency-result" aria-live="polite"></div>
+              </article>
+            </section>
+          </div>
+
+          <!-- Department Query View -->
+          <div
+            id="departmentView"
+            style="display: none; flex-direction: column; gap: 12px"
+          >
+            <div class="card">
+              <h2 style="font-size: 15px; margin-bottom: 4px">
+                New Maintenance Query
+              </h2>
+              <p
+                style="
+                  font-size: 11px;
+                  color: var(--text-muted);
+                  margin-bottom: 12px;
+                "
+              >
+                Submit required corridor maintenance blocks directly to
+                automated scheduler.
+              </p>
+              <form id="new-maintenance-form">
+                <div class="form-grid">
+                  <div class="form-grp">
+                    <label>Department</label>
+                    <select id="dept-selector-input">
+                      <option value="Engineering (Track)">
+                        Engineering (Track)
+                      </option>
+                      <option value="S&T (Signalling)">S&T (Signalling)</option>
+                      <option value="Traction (OHE)">Traction (OHE)</option>
+                    </select>
+                  </div>
+                  <div class="form-grp">
+                    <label>Location (From - To KM)</label>
+                    <div style="display: flex; gap: 6px">
+                      <input
+                        type="number"
+                        step="0.1"
+                        id="km-from-input"
+                        value="12.0"
+                        required
+                      />
+                      <input
+                        type="number"
+                        step="0.1"
+                        id="km-to-input"
+                        value="13.0"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-grp">
+                    <label>Asset</label>
+                    <select id="asset-type-input">
+                      <option value="Track Section">Track Section</option>
+                      <option value="Point Machine">Point Machine</option>
+                      <option value="Catenary Wire">Catenary Wire</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-grp">
+                    <label>Maintenance Type</label>
+                    <select id="maint-type-input">
+                      <option value="Track Maintenance">
+                        Track Maintenance
+                      </option>
+                      <option value="Track Inspection">Track Inspection</option>
+                      <option value="Renewal">Renewal</option>
+                    </select>
+                  </div>
+                  <div class="form-grp">
+                    <label>Priority</label>
+                    <select id="priority-input">
+                      <option value="High">High</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Low">Low</option>
+                    </select>
+                  </div>
+                  <div class="form-grp">
+                    <label>Required Duration (min)</label>
+                    <input
+                      type="number"
+                      id="duration-input"
+                      value="60"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-grp">
+                    <label>Preferred Date</label>
+                    <input type="date" id="date-input" value="2026-09-25" />
+                  </div>
+                  <div class="form-grp">
+                    <label>Preferred Window</label>
+                    <input
+                      type="text"
+                      id="time-window-input"
+                      value="10:00 - 11:30"
+                    />
+                  </div>
+                  <div class="form-grp">
+                    <label>Resources</label>
+                    <input
+                      type="text"
+                      id="resources-input"
+                      value="Tamping Machine, 10 Crew"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-grp" style="margin-bottom: 10px">
+                  <label>Emergency Maintenance?</label>
+                  <div style="display: flex; gap: 12px; font-size: 12px">
+                    <label
+                      ><input
+                        type="radio"
+                        name="emergency"
+                        id="emergency-toggle-yes"
+                      />
+                      Yes</label
+                    >
+                    <label
+                      ><input
+                        type="radio"
+                        name="emergency"
+                        id="emergency-toggle-no"
+                        checked
+                      />
+                      No</label
+                    >
+                  </div>
+                </div>
+
+                <div class="form-grp" style="margin-bottom: 10px">
+                  <label>Description / Remarks</label>
+                  <textarea
+                    id="description-input"
+                    rows="2"
+                    style="
+                      border: 1px solid var(--border);
+                      padding: 6px;
+                      border-radius: 4px;
+                      font-size: 12px;
+                    "
+                  >
+Urgent track stabilization required.</textarea
+                  >
+                </div>
+
+                <div style="display: flex; justify-content: flex-end">
+                  <button type="submit" class="btn btn-green">
+                    Submit Query
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3 style="font-size: 13px; margin-bottom: 8px">
+                My Submitted Queries
+              </h3>
+              <table class="table-sm">
+                <thead>
+                  <tr>
+                    <th>Query ID</th>
+                    <th>Location</th>
+                    <th>Type</th>
+                    <th>Duration</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Submitted On</th>
+                  </tr>
+                </thead>
+                <tbody id="department-queries-table-mount"></tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="./js/map.js?v=24"></script>
+    <script type="module" src="./js/dashboard.js?v=24"></script>
+    <script type="module" src="./js/app.js?v=24"></script>
+      <script>if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("./sw.js").catch(()=>{});</script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RAIL-OPTIMAX | Train Corridor</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="../src/components.css" />
+    <link rel="stylesheet" href="../src/map.css" />
+  </head>
+  <body style="padding: 20px; overflow-y: auto">
+    <div class="card">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 12px;
+        "
+      >
+        <h2>Live Train Feed & Corridor Path Details</h2>
+        <a href="../index.html" class="btn btn-gray">← Back to Dashboard</a>
+      </div>
+      <div class="train-grid" id="full-train-list-mount"></div>
+    </div>
+    <script type="module">
+      import { renderLiveTrains } from "../js/train.js";
+      const trains = await fetch("../trains/").then((r) => r.json());
+      renderLiveTrains("full-train-list-mount", trains);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,243 @@
+/* Whiteboard Railway Schematic Viewport (Clean White Canvas) */
+.track-wrapper {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  background: #ffffff !important;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.track-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #ffffff;
+}
+
+/* Exact Tracks from Uploaded Drawing */
+.diag-track {
+  stroke: #2b5a4b;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.diag-track-light {
+  stroke: #4d7a6b;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* Platform Tag Pills (Mint Green from Drawing) */
+.diag-plt-box {
+  fill: #dcfce7;
+  stroke: #86efac;
+  stroke-width: 1.2;
+  rx: 3;
+}
+
+.diag-plt-text {
+  fill: #14532d;
+  font-size: 8.5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* Terminal Zone Ovals (Lime Green Pills) */
+.diag-zone-oval {
+  fill: #86efac;
+  stroke: #22c55e;
+  stroke-width: 1.5;
+}
+
+.diag-zone-text {
+  fill: #064e3b;
+  font-size: 10px;
+  font-family: sans-serif;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* Train Info Cards below track */
+.train-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.train-crd {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.train-name {
+  font-weight: 700;
+  font-size: 12px;
+  color: #101828;
+}
+
+/* Interactive live-action overlay; the uploaded PDF schematic stays as the exact base map. */
+.track-wrapper.live-map{position:relative;isolation:isolate;background:#f8fafc!important;overflow:hidden;}
+.track-wrapper.live-map>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;}
+.map-action-layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+.sim-route{fill:none;stroke:#0ea5e9;stroke-width:2.5;stroke-dasharray:7 10;opacity:.15;pointer-events:none;}
+.live-train{cursor:pointer;outline:none;}
+.live-train:focus .train-halo,.live-train:hover .train-halo{opacity:.48;stroke:#075985;stroke-width:2;}
+.train-marker-label{font:700 13px ui-monospace,monospace;fill:#0f172a;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;}
+.station-hotspots rect{fill:transparent;stroke:transparent;cursor:pointer;pointer-events:all;}
+.station-hotspots rect:hover,.station-hotspots rect:focus{fill:rgba(14,165,233,.055);stroke:rgba(14,165,233,.35);stroke-dasharray:5 4;}
+.map-live-toolbar{position:absolute;z-index:5;top:9px;left:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.map-live-toolbar button{border:1px solid #cbd5e1;background:rgba(255,255,255,.95);color:#334155;border-radius:5px;padding:5px 9px;font:600 10px system-ui;cursor:pointer;box-shadow:0 1px 3px #0f172a12;}
+.map-live-toolbar button:hover{background:#eaf4ff;border-color:#7dd3fc;}
+.map-live-pill{display:flex;align-items:center;gap:5px;border-radius:5px;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:5px 8px;font:700 9px system-ui;letter-spacing:.05em;}
+.map-live-pill i{width:6px;height:6px;background:#10b981;border-radius:50%;box-shadow:0 0 0 3px #10b98122;animation:mapPulse 1.4s infinite;}
+.map-live-readout{position:absolute;z-index:5;right:10px;top:9px;display:flex;flex-direction:column;gap:3px;max-width:48%;background:rgba(255,255,255,.94);border:1px solid #dbe4ee;border-radius:5px;padding:6px 9px;box-shadow:0 1px 4px #0f172a0c;}
+.map-live-readout b{font:700 9px system-ui;color:#0f766e;letter-spacing:.035em;}
+.map-live-readout span{font:10px system-ui;color:#64748b;}
+.map-tooltip{position:absolute;z-index:6;left:50%;bottom:10px;transform:translate(-50%,8px);opacity:0;pointer-events:none;max-width:90%;padding:7px 12px;background:#0f172a;color:#fff;border-radius:6px;font:11px system-ui;box-shadow:0 4px 16px #0f172a25;transition:opacity .18s,transform .18s;}
+.map-tooltip.visible{opacity:1;transform:translate(-50%,0);}
+.block-alert rect{fill:#fee2e2;fill-opacity:.58;stroke:#dc2626;stroke-width:3;stroke-dasharray:8 5;}
+.block-alert text{font:800 15px system-ui;fill:#b91c1c;paint-order:stroke;stroke:#fff;stroke-width:3px;}
+.block-alert .block-sub{font-size:11px;}
+.live-map.has-incident .sim-route{stroke:#dc2626;opacity:.4;}
+@keyframes mapPulse{50%{opacity:.45;box-shadow:0 0 0 5px #10b98110;}}
+@media(max-width:700px){.map-live-readout{top:auto;bottom:9px;right:8px;max-width:55%;}.map-live-readout span{font-size:9px}.map-live-toolbar{top:7px;left:7px}.map-live-toolbar button{padding:4px 6px;font-size:9px}}
+
+/* Production live-telemetry overlay */
+.track-wrapper.operational-map { background: #fff !important; }
+.operational-map > img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; pointer-events:none; user-select:none; }
+.operational-map .map-action-layer { position:absolute; inset:0; width:100%; height:100%; pointer-events:auto; overflow:visible; }
+.operational-stations .station-guide { stroke:#64748b; stroke-width:1; stroke-dasharray:3 5; opacity:.25; }
+.operational-stations .station-dot-up { fill:#0f766e; stroke:#fff; stroke-width:2; }
+.operational-stations .station-dot-dn { fill:#2563eb; stroke:#fff; stroke-width:2; }
+.operational-stations .station-label { font:800 10px system-ui,sans-serif; fill:#334155; }
+.operational-stations .station-name { font:700 10px system-ui,sans-serif; fill:#0f172a; }
+.operational-stations .station-km { font:600 8px ui-monospace,monospace; fill:#64748b; }
+.station-node { cursor:pointer; outline:none; }
+.station-node:focus .station-guide,.station-node:hover .station-guide { opacity:.8; stroke:#0284c7; }
+.operational-blocks .block-band { fill:#ef4444; fill-opacity:.16; stroke:#dc2626; stroke-width:2; stroke-dasharray:7 4; }
+.operational-blocks .block-cap { stroke:#dc2626; stroke-width:3; }
+.operational-blocks .block-label { font:800 8px system-ui,sans-serif; fill:#991b1b; paint-order:stroke; stroke:#fff; stroke-width:3px; }
+.live-train { cursor:pointer; outline:none; }
+.live-train .train-body { fill:#0ea5e9; stroke:#fff; stroke-width:2; }
+.live-train .train-body[data-direction="DN"] { fill:#7c3aed; }
+.live-train .train-window { stroke:#fff; stroke-width:1.4; stroke-linecap:round; }
+.live-train .train-halo { fill:#0ea5e9; opacity:.16; }
+.live-train .train-label { font:800 10px ui-monospace,monospace; fill:#0f172a; paint-order:stroke; stroke:#fff; stroke-width:3px; }
+.live-train.train-delayed .train-body { stroke:#f59e0b; stroke-width:3; }
+.live-train.train-block .train-body { stroke:#dc2626; stroke-width:3; }
+.live-train.selected .train-halo { opacity:.55; stroke:#0284c7; stroke-width:3; }
+.live-train:focus .train-halo { opacity:.55; stroke:#0284c7; stroke-width:3; }
+.map-live-pill.offline { background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
+.map-live-pill.offline i { background:#f97316; animation:none; box-shadow:none; }
+.map-train-detail { position:absolute; z-index:6; left:10px; bottom:10px; max-width:72%; padding:7px 10px; display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,.96); border:1px solid #dbe4ee; border-radius:6px; box-shadow:0 2px 8px rgba(15,23,42,.08); }
+.map-train-detail b { font:800 10px system-ui,sans-serif; color:#0f172a; }
+.map-train-detail span { font:10px system-ui,sans-serif; color:#475569; line-height:1.35; }
+.operational-map.display-paused .live-train { opacity:.65; }
+@media (max-width:900px) {
+  .map-train-detail { max-width:88%; }
+  .operational-stations .station-name { font-size:8px; }
+  .operational-stations .station-label { font-size:8px; }
+}
+
+/* Live layer: the supplied interlocking SVG remains untouched underneath. */
+.track-wrapper.operational-map { position: relative; overflow: hidden; background: #fff !important; }
+.operational-map > img { z-index: 1; }
+.operational-map .map-action-layer { z-index: 3; pointer-events: auto; }
+.station-hitbox { fill: transparent; stroke: transparent; pointer-events: all; }
+.operational-stations .station-guide { stroke: #64748b; stroke-width: 1; stroke-dasharray: 3 5; opacity: .18; pointer-events: none; }
+.operational-stations .station-dot-up { fill: #059669; stroke: #fff; stroke-width: 2; }
+.operational-stations .station-dot-dn { fill: #2563eb; stroke: #fff; stroke-width: 2; }
+.operational-stations .station-label { font: 800 9px system-ui,sans-serif; fill: #334155; }
+.operational-stations .station-name { font: 700 9px system-ui,sans-serif; fill: #0f172a; }
+.operational-stations .station-km { font: 600 7px ui-monospace,monospace; fill: #64748b; }
+.station-node { cursor: pointer; outline: none; }
+.station-node:hover .station-hitbox,.station-node:focus .station-hitbox { fill: rgba(14,165,233,.07); stroke: rgba(14,165,233,.35); stroke-dasharray: 4 3; }
+.operational-routes { pointer-events: none; }
+.selected-route { stroke: #0284c7; stroke-width: 5; stroke-linecap: round; opacity: .55; stroke-dasharray: 8 7; animation: routeFlow .8s linear infinite; }
+.operational-blocks .block-band { fill: #ef4444; fill-opacity: .20; stroke: #dc2626; stroke-width: 2.5; stroke-dasharray: 7 4; cursor: pointer; }
+.operational-blocks .block-cap { stroke: #dc2626; stroke-width: 3; }
+.operational-blocks .block-label { font: 800 8px system-ui,sans-serif; fill: #991b1b; paint-order: stroke; stroke: #fff; stroke-width: 3px; }
+.map-signal { cursor: pointer; outline: none; }
+.signal-post { stroke: #475569; stroke-width: 2; }
+.signal-light { stroke: #fff; stroke-width: 2; }
+.signal-green .signal-light { fill: #16a34a; }
+.signal-yellow .signal-light { fill: #eab308; }
+.signal-red .signal-light { fill: #dc2626; }
+.signal-label { font: 800 7px system-ui,sans-serif; fill: #475569; }
+.live-train { cursor: pointer; outline: none; }
+.train-hitbox { fill: transparent; stroke: transparent; pointer-events: all; }
+.live-train .train-halo { fill: #0284c7; opacity: .18; }
+.live-train .train-body { fill: #0284c7; stroke: #fff; stroke-width: 2.5; pointer-events: none; }
+.live-train .train-body[data-direction="DN"] { fill: #7c3aed; }
+.live-train .train-nose { fill: #075985; pointer-events: none; }
+.live-train .train-nose[data-direction="DN"] { transform: scaleX(-1); transform-origin: 0 0; }
+.live-train .train-window { stroke: #fff; stroke-width: 1.6; stroke-linecap: round; pointer-events: none; }
+.live-train .train-label { font: 900 10px ui-monospace,monospace; fill: #0f172a; paint-order: stroke; stroke: #fff; stroke-width: 3px; pointer-events: none; }
+.live-train .train-state-label { font: 800 7px system-ui,sans-serif; fill: #475569; paint-order: stroke; stroke: #fff; stroke-width: 2px; pointer-events: none; }
+.live-train.train-delayed .train-body { stroke: #f59e0b; stroke-width: 3; }
+.live-train.train-block .train-body { stroke: #dc2626; stroke-width: 4; }
+.live-train.selected .train-halo,.live-train:focus .train-halo,.live-train:hover .train-halo { opacity: .65; stroke: #0284c7; stroke-width: 3; }
+.map-live-pill.offline { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
+.map-live-pill.offline i { background: #f97316; animation: none; box-shadow: none; }
+.map-train-detail { position:absolute; z-index:7; left:10px; bottom:10px; max-width:82%; padding:7px 10px; display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,.96); border:1px solid #dbe4ee; border-radius:6px; box-shadow:0 2px 8px rgba(15,23,42,.08); }
+.map-train-detail b { font:800 10px system-ui,sans-serif; color:#0f172a; }
+.map-train-detail span { font:10px system-ui,sans-serif; color:#475569; line-height:1.35; }
+.operational-map.display-paused .live-train { opacity:.7; }
+@keyframes routeFlow { to { stroke-dashoffset: -15; } }
+@media (prefers-reduced-motion: reduce) { .selected-route { animation:none; } }
+/* RAIL-OPTIMAX v8 operational overlay: preserve supplied schematic, strengthen live interaction. */
+.operational-map .map-action-layer { z-index: 4; }
+.operational-map .train-hitbox { fill: transparent; stroke: transparent; pointer-events: all; cursor: pointer; }
+.operational-map .train-halo { fill: #0284c7; opacity: .22; pointer-events: none; }
+.operational-map .train-body { pointer-events: none; }
+.operational-map .live-train { cursor: pointer; }
+.operational-map .live-train:hover .train-halo,
+.operational-map .live-train:focus .train-halo,
+.operational-map .live-train.selected .train-halo { opacity: .78; stroke: #0284c7; stroke-width: 3; }
+.operational-map .live-train.train-block .train-halo { fill: #dc2626; opacity: .38; }
+.operational-map .block-band.planned { fill: #f59e0b; fill-opacity: .12; stroke: #d97706; stroke-dasharray: 5 4; }
+.operational-map .map-demo-button { border-color: #c7d2fe; color: #3730a3; }
+.operational-map.map-dense .map-action-layer { transform: scale(1.015); transform-origin: center; }
+.map-live-toolbar .map-action-button{font-size:9px;padding:5px 8px;background:#f8fafc;}
+.map-live-toolbar .map-action-button.active{background:#0f766e;color:#fff;border-color:#0f766e;}
+.operational-blocks .selected-block .block-band{fill:#f59e0b;fill-opacity:.28;stroke:#b45309;stroke-width:3;stroke-dasharray:5 3;}
+.operational-routes .selected-route{stroke:#0284c7;stroke-width:5;stroke-linecap:round;opacity:.85;filter:drop-shadow(0 1px 2px rgba(2,132,199,.25));}
+.operational-routes .route-label{font:800 9px ui-monospace,monospace;fill:#075985;paint-order:stroke;stroke:#fff;stroke-width:3px;}
+
+/* AI-3 closed-loop operational states */
+.operational-map .live-train.train-ai3-hold .train-halo { opacity: .65; }
+.operational-map .live-train.train-ai3-hold .train-body { stroke:#b91c1c; stroke-width:4; }
+.operational-map .live-train.train-ai3-regulate .train-body { stroke:#d97706; stroke-width:4; }
+.operational-map .live-train.train-ai3-reroute .train-body { stroke:#2563eb; stroke-width:4; }
+
+/* v20: real reroute state - the train marker moves onto the diversion overlay */
+.ai3-reroute-path{fill:none;stroke:#2563eb;stroke-width:4;stroke-dasharray:12 8;stroke-linecap:round;opacity:.92;animation:ai3RerouteDash 1s linear infinite;filter:drop-shadow(0 1px 1px rgba(15,23,42,.25));}
+.ai3-reroute-label{font-size:11px;font-weight:800;fill:#1d4ed8;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round;}
+@keyframes ai3RerouteDash{to{stroke-dashoffset:-20;}}
+.train-ai3-reroute .train-body{stroke:#2563eb;stroke-width:3;}
+
+/* v25 final OCC map readability */
+.operational-map .live-train .train-label{font-size:9px;}
+.operational-map .live-train .train-state-label{font-size:6.5px;letter-spacing:.02em;}
+.operational-map .live-block .block-band{height:20px;}
+.operational-map .live-block .block-label{font-size:8px;font-weight:900;paint-order:stroke;stroke:#fff;stroke-width:3px;}
+.operational-map .live-train.train-ai3-reroute .train-halo{opacity:.32;}
